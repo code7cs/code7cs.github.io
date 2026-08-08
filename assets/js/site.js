@@ -35,23 +35,37 @@ for (const node of document.querySelectorAll('[data-current-year]')) {
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 document.documentElement.classList.add('motion-enabled');
 
+let starPointerX = 0;
+let starPointerY = 0;
+let starPointerTargetX = 0;
+let starPointerTargetY = 0;
 const particleReticle = document.querySelector('.particle-reticle');
+
+const updateGlobalPointer = (event) => {
+  const viewportWidth = Math.max(window.innerWidth, 1);
+  const viewportHeight = Math.max(window.innerHeight, 1);
+  starPointerTargetX = (event.clientX / viewportWidth - .5) * 2;
+  starPointerTargetY = (event.clientY / viewportHeight - .5) * 2;
+
+  if (!particleReticle) return;
+  particleReticle.style.setProperty('--pointer-x', `${event.clientX}px`);
+  particleReticle.style.setProperty('--pointer-y', `${event.clientY}px`);
+  particleReticle.classList.add('is-visible');
+};
+
+const clearGlobalPointer = () => {
+  starPointerTargetX = 0;
+  starPointerTargetY = 0;
+  particleReticle?.classList.remove('is-visible');
+};
 
 if (particleReticle) {
   document.documentElement.classList.add('has-global-reticle');
   document.body.append(particleReticle);
-
-  const updateGlobalPointer = (event) => {
-    particleReticle.style.setProperty('--pointer-x', `${event.clientX}px`);
-    particleReticle.style.setProperty('--pointer-y', `${event.clientY}px`);
-    particleReticle.classList.add('is-visible');
-  };
-
-  const clearGlobalPointer = () => particleReticle.classList.remove('is-visible');
-
-  window.addEventListener('pointermove', updateGlobalPointer, { passive: true });
-  window.addEventListener('blur', clearGlobalPointer);
 }
+
+window.addEventListener('pointermove', updateGlobalPointer, { passive: true });
+window.addEventListener('blur', clearGlobalPointer);
 
 const siteStarfield = document.createElement('canvas');
 siteStarfield.className = 'site-starfield';
@@ -69,6 +83,7 @@ if (starContext) {
     phase: Math.random() * Math.PI * 2,
     twinkle: .00035 + Math.random() * .0009,
     drift: .000001 + Math.random() * .000006,
+    parallax: .35 + Math.random() * .8,
     warm: Math.random() < .12,
   }));
 
@@ -86,10 +101,14 @@ if (starContext) {
 
   const drawStarfield = (timestamp = performance.now()) => {
     starContext.clearRect(0, 0, starWidth, starHeight);
+    starPointerX += (starPointerTargetX - starPointerX) * .045;
+    starPointerY += (starPointerTargetY - starPointerY) * .045;
 
     for (const star of stars) {
-      const x = ((star.x + Math.sin(timestamp * star.drift + star.phase) * .006) % 1 + 1) % 1 * starWidth;
-      const y = ((star.y + Math.cos(timestamp * star.drift * .7 + star.phase) * .004) % 1 + 1) % 1 * starHeight;
+      const baseX = ((star.x + Math.sin(timestamp * star.drift + star.phase) * .006) % 1 + 1) % 1 * starWidth;
+      const baseY = ((star.y + Math.cos(timestamp * star.drift * .7 + star.phase) * .004) % 1 + 1) % 1 * starHeight;
+      const x = (baseX + starPointerX * 14 * star.parallax + starWidth) % starWidth;
+      const y = (baseY + starPointerY * 12 * star.parallax + starHeight) % starHeight;
       const pulse = .78 + Math.sin(timestamp * star.twinkle + star.phase) * .22;
       const alpha = star.alpha * pulse;
       starContext.fillStyle = star.warm

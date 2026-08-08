@@ -166,6 +166,23 @@ test('crosshair follows the pointer across the whole viewport without a glow', (
   assert.match(js, /window\.addEventListener\('pointermove', updateGlobalPointer/);
 });
 
+test('major headings have a restrained pointer hover lift', () => {
+  const css = read('assets/css/styles.css');
+
+  assert.match(css, /\.hero h1,[\s\S]*\.resume-hero h1/);
+  assert.match(css, /transform:\s*translateY\(-\.12rem\) scale\(1\.006\)/);
+  assert.match(css, /text-shadow:\s*0 \.2rem 1\.25rem rgb\(142 219 247 \/ 13%\)/);
+});
+
+test('pointer movement gently shifts the randomized site stars', () => {
+  const js = read('assets/js/site.js');
+
+  assert.match(js, /parallax:\s*\.35 \+ Math\.random\(\) \* \.8/);
+  assert.match(js, /starPointerTargetX/);
+  assert.match(js, /starPointerX \+= \(starPointerTargetX - starPointerX\) \* \.045/);
+  assert.match(js, /window\.addEventListener\('pointermove', updateGlobalPointer/);
+});
+
 test('site uses a page-wide dark particle backdrop', () => {
   const css = read('assets/css/styles.css');
 

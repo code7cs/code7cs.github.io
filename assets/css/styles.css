@@ -308,6 +308,19 @@ main {
   margin-bottom: 0.4rem;
 }
 
+.hero h1,
+.page-intro h1,
+.resume-hero h1,
+.section-heading h2,
+.story-panel h2,
+.cta-panel h2,
+.project-card h2,
+.resume-card h2,
+.content-card h3 {
+  transition: transform 260ms var(--motion-ease), text-shadow 260ms ease;
+  will-change: transform;
+}
+
 .hero-summary,
 .page-intro > p,
 .resume-headline {
@@ -755,6 +768,19 @@ html.motion-enabled [data-reveal].is-visible {
     transform: translateY(-0.0625rem);
   }
 
+  .hero h1:hover,
+  .page-intro h1:hover,
+  .resume-hero h1:hover,
+  .section-heading h2:hover,
+  .story-panel h2:hover,
+  .cta-panel h2:hover,
+  .project-card h2:hover,
+  .resume-card h2:hover,
+  .content-card h3:hover {
+    transform: translateY(-.12rem) scale(1.006);
+    text-shadow: 0 .2rem 1.25rem rgb(142 219 247 / 13%);
+  }
+
   html.motion-enabled .metric-card[data-reveal].is-visible:hover,
   html.motion-enabled .content-card[data-reveal].is-visible:hover,
   html.motion-enabled .project-card[data-reveal].is-visible:hover,
@@ -914,11 +940,21 @@ html.motion-enabled [data-reveal].is-visible {
   .button:active,
   .primary-nav a:hover,
   .wordmark:hover,
+  .hero h1:hover,
+  .page-intro h1:hover,
+  .resume-hero h1:hover,
+  .section-heading h2:hover,
+  .story-panel h2:hover,
+  .cta-panel h2:hover,
+  .project-card h2:hover,
+  .resume-card h2:hover,
+  .content-card h3:hover,
   html.motion-enabled .metric-card[data-reveal].is-visible:hover,
   html.motion-enabled .content-card[data-reveal].is-visible:hover,
   html.motion-enabled .project-card[data-reveal].is-visible:hover,
   html.motion-enabled .resume-card[data-reveal].is-visible:hover {
     transform: none;
+    text-shadow: none;
   }
 
   *,
