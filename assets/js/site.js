@@ -169,15 +169,25 @@ const syncScrollHeadings = () => {
   const sweepEnd = viewportHeight * .3;
 
   for (const heading of scrollColorOnScroll) {
+    const lines = [...heading.children].filter((line) => line instanceof HTMLSpanElement);
     const progress = clampScrollColor(
       (sweepStart - heading.getBoundingClientRect().top) / (sweepStart - sweepEnd),
       0,
       1,
     );
-    heading.style.setProperty(
-      '--scroll-color-position',
-      `${100 - progress * 100}%`,
-    );
+    const lineWindow = 1 / (lines.length + .5);
+
+    lines.forEach((line, index) => {
+      const lineProgress = clampScrollColor(
+        (progress - index * lineWindow) / lineWindow,
+        0,
+        1,
+      );
+      line.style.setProperty(
+        '--scroll-color-position',
+        `${100 - lineProgress * 100}%`,
+      );
+    });
   }
 };
 

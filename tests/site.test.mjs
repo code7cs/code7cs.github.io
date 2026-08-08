@@ -75,13 +75,27 @@ test('selected section headings sweep color with scroll progress', () => {
   const css = read('assets/css/styles.css');
   const js = read('assets/js/site.js');
 
-  assert.match(html, /<h2 id="impact-title" class="scroll-color-on-scroll">Platform scale with practical outcomes<\/h2>/);
-  assert.match(html, /<h2 id="expertise-title" class="scroll-color-on-scroll">Architecture, delivery, and engineering leverage<\/h2>/);
+  assert.match(html, /<h2 id="impact-title" class="scroll-color-on-scroll">/);
+  assert.match(html, /<h2 id="expertise-title" class="scroll-color-on-scroll">/);
+  assert.match(html, /Platform scale with practical/);
+  assert.match(html, /Architecture, delivery, and/);
   assert.match(css, /\.scroll-color-on-scroll[\s\S]*background-position:\s*var\(--scroll-color-position/);
   assert.match(js, /scrollColorOnScroll/);
   assert.match(js, /getBoundingClientRect/);
   assert.match(js, /--scroll-color-position/);
   assert.match(js, /window\.addEventListener\('scroll', syncScrollHeadings/);
+});
+
+test('scroll-driven section headings sweep each line in reading order', () => {
+  const html = read('index.html');
+  const css = read('assets/css/styles.css');
+  const js = read('assets/js/site.js');
+
+  assert.match(html, /<h2 id="impact-title" class="scroll-color-on-scroll">[\s\S]*<span>Platform scale with practical<\/span>[\s\S]*<span>outcomes<\/span>[\s\S]*<\/h2>/);
+  assert.match(html, /<h2 id="expertise-title" class="scroll-color-on-scroll">[\s\S]*<span>Architecture, delivery, and<\/span>[\s\S]*<span>engineering leverage<\/span>[\s\S]*<\/h2>/);
+  assert.match(css, /\.scroll-color-on-scroll\s*>\s*span/);
+  assert.match(js, /lineWindow/);
+  assert.match(js, /index \* lineWindow/);
 });
 
 test('projects page includes all approved case studies and ownership language', () => {

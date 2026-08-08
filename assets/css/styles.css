@@ -346,6 +346,10 @@ main {
 
 .scroll-color-on-scroll {
   --scroll-color-position: 100%;
+}
+
+.scroll-color-on-scroll > span {
+  display: block;
   color: #f3f8fb;
   background-image:
     linear-gradient(100deg, transparent 0 46%, #8edbf7 49%, #f0a170 53%, transparent 58%),
@@ -977,7 +981,8 @@ html.motion-enabled [data-reveal].is-visible {
   }
 
   .scroll-color-heading span,
-  .scroll-color-on-scroll {
+  .scroll-color-on-scroll,
+  .scroll-color-on-scroll > span {
     background: none;
     color: #f3f8fb;
     -webkit-text-fill-color: currentColor;
