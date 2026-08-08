@@ -43,6 +43,21 @@ test('about page communicates positioning and verified impact', () => {
   assert.match(html, /View Resume/i);
 });
 
+test('hero headline exposes line spans for a scroll color sweep', () => {
+  const html = read('index.html');
+  const css = read('assets/css/styles.css');
+  const js = read('assets/js/site.js');
+
+  assert.match(html, /<h1 id="hero-title" class="scroll-color-heading">/);
+  assert.match(html, /<span>I build dependable web<\/span>/);
+  assert.match(html, /<span>platforms that help<\/span>/);
+  assert.match(html, /<span>teams move faster\.<\/span>/);
+  assert.match(css, /\.scroll-color-heading span/);
+  assert.match(css, /background-clip:\s*text/);
+  assert.match(js, /scroll-color-heading/);
+  assert.match(js, /--scroll-color-position/);
+});
+
 test('projects page includes all approved case studies and ownership language', () => {
   const html = read('projects.html');
   for (const name of ['Control Hub Frontend Platform', 'Momentum CH Design System', 'Engineering Lab', 'Local Wellness Customer Platform']) {

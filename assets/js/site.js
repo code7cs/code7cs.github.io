@@ -159,6 +159,10 @@ if (reduceMotion.matches || !('IntersectionObserver' in window)) {
 }
 
 const particleScene = document.querySelector('[data-particle-scene]');
+const scrollColorHeading = document.querySelector('.scroll-color-heading');
+const scrollColorLines = scrollColorHeading
+  ? [...scrollColorHeading.querySelectorAll('span')]
+  : [];
 
 if (particleScene) {
   const canvas = particleScene.querySelector('.particle-canvas');
@@ -333,6 +337,22 @@ if (particleScene) {
         : pageProgress >= reassembleStart
           ? 1 - (pageProgress - reassembleStart) / (1 - reassembleStart)
           : 1;
+      if (scrollColorLines.length) {
+        const sweepProgress = clamp(pageProgress / .52, 0, 1);
+        const lineWindow = 1 / (scrollColorLines.length + .5);
+
+        scrollColorLines.forEach((line, index) => {
+          const lineProgress = clamp(
+            (sweepProgress - index * lineWindow) / lineWindow,
+            0,
+            1,
+          );
+          line.style.setProperty(
+            '--scroll-color-position',
+            `${100 - lineProgress * 100}%`,
+          );
+        });
+      }
       rotationVelocity += clamp(delta * .0008, -.08, .08);
       targetScrollProgress = dispersion;
       if (reduceMotion.matches) {

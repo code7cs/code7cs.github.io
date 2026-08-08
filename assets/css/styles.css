@@ -316,6 +316,24 @@ main {
   margin-bottom: 0.4rem;
 }
 
+.scroll-color-heading {
+  --scroll-color-position: 100%;
+}
+
+.scroll-color-heading span {
+  display: block;
+  color: #f3f8fb;
+  background-image:
+    linear-gradient(100deg, transparent 0 46%, #8edbf7 49%, #f0a170 53%, transparent 58%),
+    linear-gradient(90deg, #f3f8fb, #f3f8fb);
+  background-position: var(--scroll-color-position, 100%) 0, 0 0;
+  background-size: 260% 100%, 100% 100%;
+  background-repeat: no-repeat;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .hero-summary,
 .page-intro > p,
 .resume-headline {
@@ -916,6 +934,12 @@ html.motion-enabled [data-reveal].is-visible {
     transform: none;
     transition: none;
     transition-delay: 0s;
+  }
+
+  .scroll-color-heading span {
+    background: none;
+    color: #f3f8fb;
+    -webkit-text-fill-color: currentColor;
   }
 
   .button:hover,
