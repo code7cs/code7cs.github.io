@@ -179,7 +179,7 @@ test('local page and asset links resolve', () => {
 
     for (const reference of references) {
       if (/^(?:https?:|mailto:|#)/i.test(reference)) continue;
-      const localPath = reference.split('#')[0];
+      const localPath = reference.split(/[?#]/)[0];
       assert.equal(existsSync(join(root, localPath)), true, `${file} references missing ${localPath}`);
     }
   }
