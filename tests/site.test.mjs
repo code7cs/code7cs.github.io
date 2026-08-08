@@ -166,12 +166,12 @@ test('crosshair follows the pointer across the whole viewport without a glow', (
   assert.match(js, /window\.addEventListener\('pointermove', updateGlobalPointer/);
 });
 
-test('major headings have a restrained pointer hover lift', () => {
+test('major headings stay still on pointer hover', () => {
   const css = read('assets/css/styles.css');
 
-  assert.match(css, /\.hero h1,[\s\S]*\.resume-hero h1/);
-  assert.match(css, /transform:\s*translateY\(-\.12rem\) scale\(1\.006\)/);
-  assert.match(css, /text-shadow:\s*0 \.2rem 1\.25rem rgb\(142 219 247 \/ 13%\)/);
+  assert.doesNotMatch(css, /\.hero h1:hover/);
+  assert.doesNotMatch(css, /transform:\s*translateY\(-\.12rem\) scale\(1\.006\)/);
+  assert.doesNotMatch(css, /text-shadow:\s*0 \.2rem 1\.25rem rgb\(142 219 247 \/ 13%\)/);
 });
 
 test('pointer movement gently shifts the randomized site stars', () => {
