@@ -145,15 +145,29 @@ test('homepage includes the approved scroll-dissolving particle scene', () => {
   assert.match(js, /scrollProgress/);
   assert.match(js, /targetScrollProgress/);
   assert.match(js, /brushTrail/);
-  assert.match(js, /particleScene\.addEventListener\('pointermove'/);
+  assert.match(js, /window\.addEventListener\('pointermove', setPointer/);
 });
 
-test('particle dispersion eases over a longer scroll range', () => {
+test('particle dispersion cycles from sphere to spread and back while scrolling', () => {
   const js = read('assets/js/site.js');
 
-  assert.match(js, /particleScene\.offsetHeight \* 1\.45/);
-  assert.match(js, /window\.innerHeight \* 1\.25/);
-  assert.match(js, /scrollProgress \+= \(targetScrollProgress - scrollProgress\) \* \.028/);
+  assert.match(js, /document\.documentElement\.scrollHeight/);
+  assert.match(js, /const disperseEnd = \.52/);
+  assert.match(js, /const reassembleStart = \.72/);
+  assert.match(js, /const pageProgress/);
+  assert.match(js, /targetScrollProgress = dispersion/);
+});
+
+test('particle sphere stays centered as a page-wide background layer', () => {
+  const css = read('assets/css/styles.css');
+  const js = read('assets/js/site.js');
+
+  assert.match(css, /\.particle-canvas\.is-global-particle-canvas\s*\{[\s\S]*position:\s*fixed/);
+  assert.match(css, /\.particle-canvas\.is-global-particle-canvas\s*\{[\s\S]*width:\s*100vw/);
+  assert.match(js, /canvas\.classList\.add\('is-global-particle-canvas'/);
+  assert.match(js, /document\.body\.append\(canvas\)/);
+  assert.match(js, /const centerY = height \* \.5/);
+  assert.match(js, /window\.addEventListener\('pointermove', setPointer/);
 });
 
 test('crosshair follows the pointer across the whole viewport without a glow', () => {

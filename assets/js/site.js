@@ -165,6 +165,9 @@ if (particleScene) {
   const context = canvas?.getContext('2d');
 
   if (canvas && context) {
+    canvas.classList.add('is-global-particle-canvas');
+    document.body.append(canvas);
+
     const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
     const points = Array.from({ length: 560 }, (_, index) => {
       const y = Math.random() * 2 - 1;
@@ -219,7 +222,7 @@ if (particleScene) {
       const sphereScale = scale * (1 - dispersion * .78);
       const interactionRadius = Math.max(16, scale * (.42 - dispersion * .16));
       const centerX = width / 2;
-      const centerY = height * .72;
+      const centerY = height * .5;
       const cosine = Math.cos(rotation);
       const sine = Math.sin(rotation);
 
@@ -318,22 +321,28 @@ if (particleScene) {
       const delta = window.scrollY - lastScrollY;
       lastScrollY = window.scrollY;
       const sceneStart = particleScene.offsetTop;
-      const sceneRange = Math.max(
-        particleScene.offsetHeight * 1.45,
-        window.innerHeight * 1.25,
+      const scrollDistance = Math.max(
+        document.documentElement.scrollHeight - window.innerHeight - sceneStart,
         1,
       );
-      const progress = clamp((window.scrollY - sceneStart) / sceneRange, 0, 1);
+      const pageProgress = clamp((window.scrollY - sceneStart) / scrollDistance, 0, 1);
+      const disperseEnd = .52;
+      const reassembleStart = .72;
+      const dispersion = pageProgress <= disperseEnd
+        ? pageProgress / disperseEnd
+        : pageProgress >= reassembleStart
+          ? 1 - (pageProgress - reassembleStart) / (1 - reassembleStart)
+          : 1;
       rotationVelocity += clamp(delta * .0008, -.08, .08);
-      targetScrollProgress = progress;
+      targetScrollProgress = dispersion;
       if (reduceMotion.matches) {
-        scrollProgress = progress;
+        scrollProgress = dispersion;
         draw();
       }
     };
 
-    particleScene.addEventListener('pointermove', setPointer);
-    particleScene.addEventListener('pointerleave', clearPointer);
+    window.addEventListener('pointermove', setPointer);
+    window.addEventListener('blur', clearPointer);
     window.addEventListener('resize', resize);
     window.addEventListener('scroll', syncScroll, { passive: true });
     resize();

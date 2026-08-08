@@ -243,6 +243,14 @@ main {
   pointer-events: none;
 }
 
+.particle-canvas.is-global-particle-canvas {
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
 .particle-reticle {
   position: fixed;
   z-index: 60;
