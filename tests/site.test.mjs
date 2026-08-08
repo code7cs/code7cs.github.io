@@ -170,6 +170,15 @@ test('sitewide stars use randomized points instead of a repeating grid', () => {
   assert.match(js, /prefers-reduced-motion/);
 });
 
+test('particle scene uses the full viewport width for scroll dispersion', () => {
+  const css = read('assets/css/styles.css');
+
+  assert.match(css, /\.hero-immersive\s*\{[\s\S]*width:\s*100vw/);
+  assert.match(css, /\.hero-immersive\s*\{[\s\S]*max-width:\s*none/);
+  assert.match(css, /\.hero-immersive\s*\{[\s\S]*margin-inline:\s*calc\(50%\s*-\s*50vw\)/);
+  assert.match(css, /html\s*\{[\s\S]*overflow-x:\s*clip/);
+});
+
 test('motion initialization preserves visible content for accessibility fallbacks', () => {
   const js = read('assets/js/site.js');
   assert.match(js, /reduceMotion\.matches/);
