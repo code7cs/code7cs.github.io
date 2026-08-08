@@ -148,6 +148,17 @@ test('homepage includes the approved scroll-dissolving particle scene', () => {
   assert.match(js, /particleScene\.addEventListener\('pointermove'/);
 });
 
+test('site uses a page-wide dark particle backdrop', () => {
+  const css = read('assets/css/styles.css');
+
+  assert.match(css, /color-scheme:\s*dark/);
+  assert.match(css, /--bg:\s*#060d14/);
+  assert.match(css, /body::before\s*\{/);
+  assert.match(css, /background-image:\s*radial-gradient\(#fff 1px, transparent 1px\)/);
+  assert.match(css, /body\s*>\s*\*\s*\{/);
+  assert.match(css, /\.hero-immersive\s*\{[\s\S]*background:\s*transparent/);
+});
+
 test('motion initialization preserves visible content for accessibility fallbacks', () => {
   const js = read('assets/js/site.js');
   assert.match(js, /reduceMotion\.matches/);
