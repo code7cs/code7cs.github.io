@@ -290,6 +290,16 @@ test('mobile breakpoint keeps the full-width particle scene centered', () => {
   assert.match(css, /@media\s*\(max-width:\s*30rem\)[\s\S]*\.hero-immersive\s*\{[\s\S]*margin-inline:\s*calc\(50%\s*-\s*50vw\)/);
 });
 
+test('mobile menu control uses a polished compact treatment', () => {
+  const css = read('assets/css/styles.css');
+
+  assert.match(css, /\.nav-toggle\s*\{[\s\S]*min-width:\s*auto/);
+  assert.match(css, /\.nav-toggle\s*\{[\s\S]*border-radius:\s*0\.75rem/);
+  assert.match(css, /\.nav-toggle\s*\{[\s\S]*backdrop-filter:\s*blur\(/);
+  assert.match(css, /\.nav-toggle\s*\{[\s\S]*box-shadow:/);
+  assert.match(css, /\.nav-toggle\[aria-expanded="true"\]/);
+});
+
 test('motion initialization preserves visible content for accessibility fallbacks', () => {
   const js = read('assets/js/site.js');
   assert.match(js, /reduceMotion\.matches/);
