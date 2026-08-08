@@ -142,6 +142,120 @@ main {
   text-align: center;
 }
 
+.hero-immersive {
+  position: relative;
+  z-index: 0;
+  min-height: min(46rem, calc(100svh - 6rem));
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid #29445a;
+  border-radius: var(--radius);
+  background: radial-gradient(circle at 50% 42%, #17354a 0, #0b1a27 48%, #060d14 100%);
+  box-shadow: 0 1.5rem 4.5rem rgb(6 13 20 / 28%);
+  color: #f3f8fb;
+  cursor: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  padding: clamp(3rem, 8vw, 6.5rem) clamp(1.25rem, 7vw, 6rem);
+}
+
+.hero-immersive .eyebrow {
+  color: #b8def4;
+}
+
+.hero-immersive .hero-summary,
+.hero-immersive .availability {
+  color: #c1d2de;
+}
+
+.hero-immersive .button-primary {
+  border-color: #e6f4fb;
+  background: #e6f4fb;
+  color: #092337;
+}
+
+.hero-immersive .button-primary:hover {
+  border-color: white;
+  background: white;
+  color: #092337;
+}
+
+.hero-immersive .button-secondary {
+  border-color: #93b2c5;
+  background: transparent;
+  color: #f3f8fb;
+}
+
+.hero-immersive .button-secondary:hover {
+  border-color: #e6f4fb;
+  background: rgb(230 244 251 / 9%);
+  color: #f3f8fb;
+}
+
+.particle-stars,
+.particle-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.particle-stars {
+  z-index: -1;
+  opacity: .48;
+  background-image: radial-gradient(#fff 1px, transparent 1px), radial-gradient(#bfe8ff 1px, transparent 1px);
+  background-size: 62px 58px, 87px 91px;
+  background-position: 0 0, 37px 24px;
+}
+
+.particle-canvas {
+  z-index: 0;
+  pointer-events: none;
+}
+
+.particle-reticle {
+  position: absolute;
+  z-index: 2;
+  left: var(--pointer-x, 50%);
+  top: var(--pointer-y, 50%);
+  width: 18px;
+  height: 18px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(circle at center, rgb(215 229 193 / 85%) 0 1.5px, transparent 1.8px);
+  transition: opacity 120ms ease-out;
+}
+
+.particle-reticle::before,
+.particle-reticle::after {
+  position: absolute;
+  background: rgb(215 229 193 / 72%);
+  box-shadow: 0 0 5px rgb(215 229 193 / 25%);
+  content: "";
+}
+
+.particle-reticle::before {
+  left: 8px;
+  top: 0;
+  width: 1px;
+  height: 18px;
+}
+
+.particle-reticle::after {
+  left: 0;
+  top: 8px;
+  width: 18px;
+  height: 1px;
+}
+
+.hero-immersive.is-pointer-active .particle-reticle {
+  opacity: .78;
+}
+
 .hero h1,
 .page-intro h1,
 .resume-hero h1 {

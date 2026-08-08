@@ -65,3 +65,193 @@ if (reduceMotion.matches || !('IntersectionObserver' in window)) {
 
   for (const node of revealNodes) revealObserver.observe(node);
 }
+
+const particleScene = document.querySelector('[data-particle-scene]');
+
+if (particleScene) {
+  const canvas = particleScene.querySelector('.particle-canvas');
+  const context = canvas?.getContext('2d');
+
+  if (canvas && context) {
+    const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+    const points = Array.from({ length: 560 }, (_, index) => {
+      const y = Math.random() * 2 - 1;
+      const angle = Math.random() * Math.PI * 2;
+      const radius = Math.sqrt(1 - y * y);
+
+      return {
+        x: radius * Math.cos(angle),
+        y,
+        z: radius * Math.sin(angle),
+        scatterX: Math.random() * 2 - 1,
+        scatterY: Math.random() * 2 - 1,
+        size: .7 + Math.random() * 1.8,
+        warm: index % 6 === 0,
+        offsetX: 0,
+        offsetY: 0,
+        velocityX: 0,
+        velocityY: 0,
+      };
+    });
+
+    let width = 360;
+    let height = 250;
+    let rotation = Math.random() * Math.PI;
+    let rotationVelocity = 0;
+    let scrollProgress = 0;
+    let targetScrollProgress = 0;
+    let cursorX = 0;
+    let cursorY = 0;
+    let previousCursorX = 0;
+    let previousCursorY = 0;
+    let cursorActive = false;
+    let brushX = 0;
+    let brushY = 0;
+    let brushTrail = [];
+
+    const resize = () => {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = rect.width;
+      height = rect.height;
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      context.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+
+    const draw = () => {
+      context.clearRect(0, 0, width, height);
+
+      const scale = Math.min(width, height) * .26;
+      const dispersion = scrollProgress * scrollProgress * (3 - 2 * scrollProgress);
+      const sphereScale = scale * (1 - dispersion * .78);
+      const interactionRadius = Math.max(16, scale * (.42 - dispersion * .16));
+      const centerX = width / 2;
+      const centerY = height * .72;
+      const cosine = Math.cos(rotation);
+      const sine = Math.sin(rotation);
+
+      points.forEach((point) => {
+        const x = point.x * cosine - point.z * sine;
+        const depth = point.x * sine + point.z * cosine;
+        const spherePx = centerX + x * sphereScale;
+        const spherePy = centerY + point.y * sphereScale;
+        const spreadPx = centerX + point.scatterX * width * .9;
+        const spreadPy = height / 2 + point.scatterY * height * .9;
+        const basePx = spherePx + (spreadPx - spherePx) * dispersion;
+        const basePy = spherePy + (spreadPy - spherePy) * dispersion;
+        const hitPx = basePx + point.offsetX * scale;
+        const hitPy = basePy + point.offsetY * scale;
+
+        brushTrail.forEach((brush) => {
+          const distanceX = hitPx - brush.x;
+          const distanceY = hitPy - brush.y;
+          const distance = Math.hypot(distanceX, distanceY);
+
+          if (distance >= interactionRadius) return;
+
+          const falloff = (1 - distance / interactionRadius) * brush.life;
+          const normalX = distance > 1 ? distanceX / distance : 0;
+          const normalY = distance > 1 ? distanceY / distance : -1;
+          const directionLength = Math.hypot(normalX * .85 + brush.dx, normalY * .85 + brush.dy) || 1;
+          const impulse = (.008 + Math.min(Math.hypot(brush.dx, brush.dy), 1.2) * .038) * falloff;
+          point.velocityX += (normalX * .85 + brush.dx) / directionLength * impulse;
+          point.velocityY += (normalY * .85 + brush.dy) / directionLength * impulse;
+        });
+
+        point.velocityX += -point.offsetX * .012;
+        point.velocityY += -point.offsetY * .012;
+        point.velocityX *= .94;
+        point.velocityY *= .94;
+        point.offsetX = clamp(point.offsetX + point.velocityX, -.45, .45);
+        point.offsetY = clamp(point.offsetY + point.velocityY, -.45, .45);
+
+        const interactionScale = 1 - dispersion * .4;
+        const px = basePx + point.offsetX * scale * interactionScale;
+        const py = basePy + point.offsetY * scale * interactionScale;
+        const alpha = (.24 + ((depth + 1) / 2) * .62) * (1 - dispersion * .26);
+        const size = point.size * (.6 + ((depth + 1) / 2) * .85) * (1 - dispersion * .28);
+
+        context.fillStyle = point.warm
+          ? `rgba(255, ${150 + Math.round(depth * 18)}, 104, ${alpha})`
+          : `rgba(142, 219, 247, ${alpha})`;
+        context.beginPath();
+        context.arc(px, py, size, 0, Math.PI * 2);
+        context.fill();
+      });
+
+      brushX *= .84;
+      brushY *= .84;
+      brushTrail = brushTrail
+        .map((brush) => ({ ...brush, life: brush.life * .78 }))
+        .filter((brush) => brush.life > .035);
+    };
+
+    const animate = () => {
+      rotation += rotationVelocity;
+      rotationVelocity *= .92;
+      scrollProgress += (targetScrollProgress - scrollProgress) * .06;
+      if (!reduceMotion.matches) rotation += .002;
+      draw();
+      if (!reduceMotion.matches) requestAnimationFrame(animate);
+    };
+
+    const setPointer = (event) => {
+      const rect = canvas.getBoundingClientRect();
+      const nextX = event.clientX - rect.left;
+      const nextY = event.clientY - rect.top;
+
+      if (!cursorActive) {
+        previousCursorX = nextX;
+        previousCursorY = nextY;
+      }
+
+      brushX = clamp(brushX + (nextX - previousCursorX) / Math.max(rect.width, 1) * 7, -1.2, 1.2);
+      brushY = clamp(brushY + (nextY - previousCursorY) / Math.max(rect.height, 1) * 7, -1.2, 1.2);
+      cursorX = nextX;
+      cursorY = nextY;
+
+      if (Math.abs(nextX - previousCursorX) + Math.abs(nextY - previousCursorY) > 1) {
+        brushTrail.push({ x: nextX, y: nextY, dx: brushX, dy: brushY, life: 1 });
+        brushTrail = brushTrail.slice(-8);
+      }
+
+      previousCursorX = nextX;
+      previousCursorY = nextY;
+      cursorActive = true;
+      particleScene.style.setProperty('--pointer-x', `${event.clientX - rect.left}px`);
+      particleScene.style.setProperty('--pointer-y', `${event.clientY - rect.top}px`);
+      particleScene.classList.add('is-pointer-active');
+      if (reduceMotion.matches) draw();
+    };
+
+    const clearPointer = () => {
+      cursorActive = false;
+      particleScene.classList.remove('is-pointer-active');
+    };
+
+    let lastScrollY = window.scrollY;
+    const syncScroll = () => {
+      const delta = window.scrollY - lastScrollY;
+      lastScrollY = window.scrollY;
+      const sceneStart = particleScene.offsetTop;
+      const sceneRange = Math.max(particleScene.offsetHeight * .7, 1);
+      const progress = clamp((window.scrollY - sceneStart) / sceneRange, 0, 1);
+      rotationVelocity += clamp(delta * .0008, -.08, .08);
+      targetScrollProgress = progress;
+      if (reduceMotion.matches) {
+        scrollProgress = progress;
+        draw();
+      }
+    };
+
+    particleScene.addEventListener('pointermove', setPointer);
+    particleScene.addEventListener('pointerleave', clearPointer);
+    window.addEventListener('resize', resize);
+    window.addEventListener('scroll', syncScroll, { passive: true });
+    resize();
+    syncScroll();
+    draw();
+    if (!reduceMotion.matches) requestAnimationFrame(animate);
+  }
+}

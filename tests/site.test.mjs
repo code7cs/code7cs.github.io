@@ -132,6 +132,22 @@ test('shared assets provide responsive, focus, and reduced-motion behavior', () 
   assert.match(js, /is-visible/);
 });
 
+test('homepage includes the approved scroll-dissolving particle scene', () => {
+  const about = read('index.html');
+  const css = read('assets/css/styles.css');
+  const js = read('assets/js/site.js');
+
+  assert.match(about, /data-particle-scene/);
+  assert.match(about, /class="particle-canvas"/);
+  assert.match(about, /class="particle-reticle"/);
+  assert.match(css, /\.hero-immersive/);
+  assert.match(css, /cursor:\s*none/);
+  assert.match(js, /scrollProgress/);
+  assert.match(js, /targetScrollProgress/);
+  assert.match(js, /brushTrail/);
+  assert.match(js, /particleScene\.addEventListener\('pointermove'/);
+});
+
 test('motion initialization preserves visible content for accessibility fallbacks', () => {
   const js = read('assets/js/site.js');
   assert.match(js, /reduceMotion\.matches/);
