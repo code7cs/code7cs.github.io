@@ -179,6 +179,13 @@ test('particle scene uses the full viewport width for scroll dispersion', () => 
   assert.match(css, /html\s*\{[\s\S]*overflow-x:\s*clip/);
 });
 
+test('mobile breakpoint keeps the full-width particle scene centered', () => {
+  const css = read('assets/css/styles.css');
+
+  assert.match(css, /@media\s*\(max-width:\s*30rem\)[\s\S]*\.hero-immersive\s*\{[\s\S]*width:\s*100vw/);
+  assert.match(css, /@media\s*\(max-width:\s*30rem\)[\s\S]*\.hero-immersive\s*\{[\s\S]*margin-inline:\s*calc\(50%\s*-\s*50vw\)/);
+});
+
 test('motion initialization preserves visible content for accessibility fallbacks', () => {
   const js = read('assets/js/site.js');
   assert.match(js, /reduceMotion\.matches/);
