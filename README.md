@@ -1,5 +1,7 @@
 # code7cs.github.io
 
+[View my portfolio →](https://code7cs.github.io/)
+
 Personal engineering portfolio for Hanfan Wang.
 
 The site is a lightweight, dependency-free GitHub Pages project with three primary pages:
