@@ -64,6 +64,14 @@ test('resume page translates approved resume content without publishing the PDF'
   assert.equal(existsSync(join(root, 'assets/resume/Hanfan_Wang_Resume_Senior_Frontend_Engineer.pdf')), false);
 });
 
+test('work authorization appears only on the resume page', () => {
+  const about = read('index.html');
+  const resume = read('resume.html');
+  assert.match(about, /Verona, NJ · NYC metro/i);
+  assert.doesNotMatch(about, /authorized to work without sponsorship/i);
+  assert.match(resume, /authorized to work without sponsorship/i);
+});
+
 test('public HTML does not expose the phone number', () => {
   for (const file of pageFiles) {
     assert.doesNotMatch(read(file), /201[-.)\s]*238[-.\s]*6649/);
