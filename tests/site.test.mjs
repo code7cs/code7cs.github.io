@@ -154,9 +154,20 @@ test('site uses a page-wide dark particle backdrop', () => {
   assert.match(css, /color-scheme:\s*dark/);
   assert.match(css, /--bg:\s*#060d14/);
   assert.match(css, /body::before\s*\{/);
-  assert.match(css, /background-image:\s*radial-gradient\(#fff 1px, transparent 1px\)/);
+  assert.match(css, /\.site-starfield\s*\{/);
   assert.match(css, /body\s*>\s*\*\s*\{/);
   assert.match(css, /\.hero-immersive\s*\{[\s\S]*background:\s*transparent/);
+});
+
+test('sitewide stars use randomized points instead of a repeating grid', () => {
+  const css = read('assets/css/styles.css');
+  const js = read('assets/js/site.js');
+
+  assert.match(css, /\.site-starfield\s*\{/);
+  assert.doesNotMatch(css, /body::before\s*\{[\s\S]*background-size:\s*62px\s+58px/s);
+  assert.match(js, /siteStarfield/);
+  assert.match(js, /Math\.random\(\)/);
+  assert.match(js, /prefers-reduced-motion/);
 });
 
 test('motion initialization preserves visible content for accessibility fallbacks', () => {

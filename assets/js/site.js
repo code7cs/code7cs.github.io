@@ -35,6 +35,61 @@ for (const node of document.querySelectorAll('[data-current-year]')) {
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 document.documentElement.classList.add('motion-enabled');
 
+const siteStarfield = document.createElement('canvas');
+siteStarfield.className = 'site-starfield';
+siteStarfield.setAttribute('aria-hidden', 'true');
+document.body.prepend(siteStarfield);
+
+const starContext = siteStarfield.getContext('2d');
+
+if (starContext) {
+  const stars = Array.from({ length: 190 }, () => ({
+    x: Math.random(),
+    y: Math.random(),
+    radius: Math.random() < .1 ? 1.1 + Math.random() * .9 : .35 + Math.random() * .7,
+    alpha: .18 + Math.random() * .5,
+    phase: Math.random() * Math.PI * 2,
+    twinkle: .00035 + Math.random() * .0009,
+    drift: .000001 + Math.random() * .000006,
+    warm: Math.random() < .12,
+  }));
+
+  let starWidth = 1;
+  let starHeight = 1;
+
+  const resizeStarfield = () => {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    starWidth = window.innerWidth;
+    starHeight = window.innerHeight;
+    siteStarfield.width = Math.round(starWidth * dpr);
+    siteStarfield.height = Math.round(starHeight * dpr);
+    starContext.setTransform(dpr, 0, 0, dpr, 0, 0);
+  };
+
+  const drawStarfield = (timestamp = performance.now()) => {
+    starContext.clearRect(0, 0, starWidth, starHeight);
+
+    for (const star of stars) {
+      const x = ((star.x + Math.sin(timestamp * star.drift + star.phase) * .006) % 1 + 1) % 1 * starWidth;
+      const y = ((star.y + Math.cos(timestamp * star.drift * .7 + star.phase) * .004) % 1 + 1) % 1 * starHeight;
+      const pulse = .78 + Math.sin(timestamp * star.twinkle + star.phase) * .22;
+      const alpha = star.alpha * pulse;
+      starContext.fillStyle = star.warm
+        ? `rgba(240, 161, 112, ${alpha * .72})`
+        : `rgba(191, 232, 255, ${alpha})`;
+      starContext.beginPath();
+      starContext.arc(x, y, star.radius, 0, Math.PI * 2);
+      starContext.fill();
+    }
+
+    if (!reduceMotion.matches) requestAnimationFrame(drawStarfield);
+  };
+
+  resizeStarfield();
+  drawStarfield();
+  window.addEventListener('resize', resizeStarfield);
+}
+
 for (const [index, node] of document.querySelectorAll('.hero > *, .page-intro > *, .resume-hero > *').entries()) {
   node.setAttribute('data-intro', '');
   node.style.setProperty('--motion-order', String(index));

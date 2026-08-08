@@ -44,17 +44,26 @@ body::before {
   position: fixed;
   z-index: 0;
   inset: 0;
-  background-image: radial-gradient(#fff 1px, transparent 1px), radial-gradient(#bfe8ff 1px, transparent 1px);
-  background-size: 62px 58px, 87px 91px;
-  background-position: 0 0, 37px 24px;
+  background:
+    radial-gradient(circle at 18% 18%, rgb(142 219 247 / 9%) 0, transparent 28rem),
+    radial-gradient(circle at 82% 72%, rgb(240 161 112 / 7%) 0, transparent 32rem);
   content: "";
-  opacity: .34;
+  opacity: .7;
   pointer-events: none;
 }
 
 body > * {
   position: relative;
   z-index: 1;
+}
+
+.site-starfield {
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
 }
 
 a {
@@ -222,10 +231,7 @@ main {
 
 .particle-stars {
   z-index: -1;
-  opacity: .18;
-  background-image: radial-gradient(#fff 1px, transparent 1px), radial-gradient(#bfe8ff 1px, transparent 1px);
-  background-size: 62px 58px, 87px 91px;
-  background-position: 0 0, 37px 24px;
+  opacity: 0;
 }
 
 .particle-canvas {
