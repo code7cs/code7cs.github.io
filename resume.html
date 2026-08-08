@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Professional resume for Hanfan Wang, senior full-stack engineer." />
+    <title>Resume | Hanfan Wang</title>
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <script src="assets/js/site.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+      <a class="wordmark" href="index.html">Hanfan Wang</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">Menu</button>
+      <nav id="primary-nav" class="primary-nav" aria-label="Primary navigation">
+        <a href="index.html">About</a>
+        <a href="projects.html">Projects</a>
+        <a href="resume.html" aria-current="page">Resume</a>
+      </nav>
+    </header>
+    <main id="main-content">
+      <section class="resume-hero section-shell" aria-labelledby="resume-title">
+        <p class="eyebrow">Resume</p>
+        <h1 id="resume-title">Hanfan Wang</h1>
+        <p class="resume-headline">Senior Full-Stack Engineer with deep frontend expertise</p>
+        <div class="resume-contact" aria-label="Professional links">
+          <a href="mailto:hanw1018@gmail.com">Email</a>
+          <a href="https://www.linkedin.com/in/hanfan" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://github.com/code7cs" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="availability">Verona, NJ · NYC metro · U.S. authorized to work without sponsorship</p>
+      </section>
+
+      <div class="resume-cards section-shell">
+        <section class="resume-card" aria-labelledby="summary-title">
+          <div class="resume-card-heading">
+            <span class="section-mark" aria-hidden="true">01</span>
+            <h2 id="summary-title">Professional Summary</h2>
+          </div>
+          <p>Senior engineer with 6+ years of experience building and evolving enterprise SaaS products at scale. At Cisco Webex, I owned frontend platform architecture used by 50+ feature teams and led the Control Hub implementation of the Momentum design system as engineering point of contact.</p>
+          <p>My deepest expertise is in TypeScript, JavaScript, React, Next.js, and Angular, with full-stack delivery experience across Node.js, REST, GraphQL, and modern data layers. I lead cross-functional initiatives, mentor engineers, and care about accessible design, web performance, testing, observability, and developer experience.</p>
+        </section>
+
+        <section class="resume-card" aria-labelledby="experience-title">
+          <div class="resume-card-heading">
+            <span class="section-mark" aria-hidden="true">02</span>
+            <h2 id="experience-title">Professional Experience</h2>
+          </div>
+
+          <article class="experience-item">
+            <header>
+              <div><h3>Software Engineer III</h3><p>Cisco Systems</p></div>
+              <p class="experience-date">Jul 2022 – Jul 2026</p>
+            </header>
+            <ul>
+              <li>Owned Control Hub platform engineering for enterprise admin SaaS: shared shell, routing, authentication/RBAC, notifications, route guards, and common libraries supporting React and Angular applications across 50+ feature teams.</li>
+              <li>Led the Momentum CH design system implementation as engineering point of contact, guiding reusable components, documentation, semantic tokens, shared styling, and WCAG accessibility.</li>
+              <li>Architected hybrid micro-frontend delivery using an esbuild host shell and webpack Module Federation remotes, integrating React global navigation across Angular platform surfaces.</li>
+              <li>Developed a TypeScript AST automation pipeline that synchronized navigation metadata and site maps across 300+ routes.</li>
+              <li>Cut a 3–4 minute local build to under 30 seconds and introduced Nx affected builds, module-boundary linting, and CI release gates.</li>
+              <li>Used Amplitude, Grafana, and Splunk to monitor navigation, micro-frontend failures, release health, and P75/P90 latency; added bundle-budget gates to prevent regressions.</li>
+            </ul>
+          </article>
+
+          <article class="experience-item">
+            <header>
+              <div><h3>Frontend Engineer</h3><p>Tesla, Inc.</p></div>
+              <p class="experience-date">Aug 2021 – Jul 2022</p>
+            </header>
+            <ul>
+              <li>Built enterprise recruiting and onboarding workflows with reusable UI components and responsive desktop and mobile experiences.</li>
+              <li>Expanded online document preview and improved candidate search and filtering accuracy by 40%.</li>
+              <li>Built a schema-driven form system that rendered complex nested forms from backend-supplied JSON configurations.</li>
+              <li>Improved internal UI library performance and release quality through packaging, unit tests, and Jenkins coverage checks.</li>
+            </ul>
+          </article>
+
+          <article class="experience-item">
+            <header>
+              <div><h3>Technology Analyst</h3><p>Infosys Limited</p></div>
+              <p class="experience-date">Nov 2020 – Jul 2021</p>
+            </header>
+            <ul>
+              <li>Modernized an underwriting workstation from Silverlight to Angular with Spring Boot REST APIs and SQL in a regulated environment.</li>
+              <li>Built shared PrimeNG components, state patterns, internationalization, session management, and iterative delivery workflows.</li>
+              <li>Delivered a full-stack talent-planning application with Node.js, MongoDB, and JWT; lazy loading and skeleton screens reduced the landing bundle by 80%.</li>
+            </ul>
+          </article>
+        </section>
+
+        <section class="resume-card" aria-labelledby="skills-title">
+          <div class="resume-card-heading">
+            <span class="section-mark" aria-hidden="true">03</span>
+            <h2 id="skills-title">Technical Skills</h2>
+          </div>
+          <div class="skills-groups">
+            <div><h3>Frontend</h3><p>TypeScript, JavaScript, React, Next.js App Router, Vite, TanStack Query, Redux, RxJS/NgRx, Angular 11–21, Storybook, D3.js, Tailwind CSS, HTML5, CSS3/SCSS, SSR, responsive UI, accessibility, i18n, performance and Web Vitals.</p></div>
+            <div><h3>Platform &amp; Cloud</h3><p>AWS S3 and CloudFront, Docker, Nx monorepos, Module Federation, Webpack/esbuild, design systems, RBAC, and SSO.</p></div>
+            <div><h3>Backend &amp; Data</h3><p>Node.js, Express, GraphQL, Java/Spring Boot, PostgreSQL, Prisma, MongoDB, JWT, NextAuth, Server Actions, and REST APIs.</p></div>
+            <div><h3>Quality &amp; Tooling</h3><p>Vitest, Jest, Playwright, Cypress, Figma, Git, ESLint, Jenkins CI/CD, Vercel, Amplitude, Grafana, and Splunk.</p></div>
+          </div>
+        </section>
+
+        <section class="resume-card" aria-labelledby="technical-project-title">
+          <div class="resume-card-heading">
+            <span class="section-mark" aria-hidden="true">04</span>
+            <h2 id="technical-project-title">Technical Project</h2>
+          </div>
+          <article class="experience-item">
+            <header>
+              <div><h3>Local Wellness Customer Platform</h3><p>Independent</p></div>
+              <p class="experience-date">2024 – 2025</p>
+            </header>
+            <ul>
+              <li>Built and shipped a customer web product spanning marketing, authentication, online booking, slot scheduling, email confirmations, and SEO.</li>
+              <li>Owned delivery end to end from UX and frontend through API and database design using Next.js, TypeScript, PostgreSQL, Prisma, NextAuth, Vitest, Git-based CI/CD, and Vercel.</li>
+            </ul>
+          </article>
+        </section>
+
+        <section class="resume-card" aria-labelledby="education-title">
+          <div class="resume-card-heading">
+            <span class="section-mark" aria-hidden="true">05</span>
+            <h2 id="education-title">Education</h2>
+          </div>
+          <div class="education-item">
+            <div><h3>Master of Science, Computer Science</h3><p>Stevens Institute of Technology</p></div>
+            <p>2018 – 2020</p>
+          </div>
+          <div class="education-item">
+            <div><h3>Bachelor of Science, Software Engineering</h3><p>Tianjin University of Commerce</p></div>
+            <p>2014 – 2018</p>
+          </div>
+        </section>
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="footer-links" aria-label="Contact links">
+        <a href="https://github.com/code7cs" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://www.linkedin.com/in/hanfan" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="mailto:hanw1018@gmail.com">Email</a>
+      </div>
+      <p>&copy; <span data-current-year>2026</span> Hanfan Wang</p>
+    </footer>
+  </body>
+</html>
