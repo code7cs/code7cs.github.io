@@ -317,7 +317,7 @@ main {
 }
 
 .scroll-color-heading {
-  --scroll-color-position: 100%;
+  isolation: isolate;
 }
 
 .scroll-color-heading span {
@@ -326,12 +326,22 @@ main {
   background-image:
     linear-gradient(100deg, transparent 0 46%, #8edbf7 49%, #f0a170 53%, transparent 58%),
     linear-gradient(90deg, #f3f8fb, #f3f8fb);
-  background-position: var(--scroll-color-position, 100%) 0, 0 0;
+  background-position: 100% 0, 0 0;
   background-size: 260% 100%, 100% 100%;
   background-repeat: no-repeat;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  animation: title-color-sweep 9s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  animation-fill-mode: both;
+}
+
+.scroll-color-heading span:nth-child(2) {
+  animation-delay: 1.35s;
+}
+
+.scroll-color-heading span:nth-child(3) {
+  animation-delay: 2.7s;
 }
 
 .hero-summary,
@@ -822,6 +832,22 @@ html.motion-enabled [data-reveal].is-visible {
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+@keyframes title-color-sweep {
+  0%,
+  14% {
+    background-position: 100% 0, 0 0;
+  }
+
+  50%,
+  62% {
+    background-position: 0% 0, 0 0;
+  }
+
+  100% {
+    background-position: 100% 0, 0 0;
   }
 }
 

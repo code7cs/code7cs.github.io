@@ -54,8 +54,19 @@ test('hero headline exposes line spans for a scroll color sweep', () => {
   assert.match(html, /<span>teams move faster\.<\/span>/);
   assert.match(css, /\.scroll-color-heading span/);
   assert.match(css, /background-clip:\s*text/);
-  assert.match(js, /scroll-color-heading/);
-  assert.match(js, /--scroll-color-position/);
+  assert.match(css, /background-position:\s*100%\s*0/);
+  assert.match(js, /particleScene/);
+});
+
+test('hero headline color sweep starts automatically after page load', () => {
+  const css = read('assets/css/styles.css');
+  const js = read('assets/js/site.js');
+
+  assert.match(css, /@keyframes\s+title-color-sweep/);
+  assert.match(css, /\.scroll-color-heading span[\s\S]*animation:\s*title-color-sweep/);
+  assert.match(css, /\.scroll-color-heading span:nth-child\(2\)/);
+  assert.match(css, /\.scroll-color-heading span:nth-child\(3\)/);
+  assert.doesNotMatch(js, /scrollColorLines/);
 });
 
 test('projects page includes all approved case studies and ownership language', () => {
