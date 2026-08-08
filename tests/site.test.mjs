@@ -64,9 +64,24 @@ test('hero headline color sweep starts automatically after page load', () => {
 
   assert.match(css, /@keyframes\s+title-color-sweep/);
   assert.match(css, /\.scroll-color-heading span[\s\S]*animation:\s*title-color-sweep/);
+  assert.match(css, /title-color-sweep\s+18s/);
   assert.match(css, /\.scroll-color-heading span:nth-child\(2\)/);
   assert.match(css, /\.scroll-color-heading span:nth-child\(3\)/);
   assert.doesNotMatch(js, /scrollColorLines/);
+});
+
+test('selected section headings sweep color with scroll progress', () => {
+  const html = read('index.html');
+  const css = read('assets/css/styles.css');
+  const js = read('assets/js/site.js');
+
+  assert.match(html, /<h2 id="impact-title" class="scroll-color-on-scroll">Platform scale with practical outcomes<\/h2>/);
+  assert.match(html, /<h2 id="expertise-title" class="scroll-color-on-scroll">Architecture, delivery, and engineering leverage<\/h2>/);
+  assert.match(css, /\.scroll-color-on-scroll[\s\S]*background-position:\s*var\(--scroll-color-position/);
+  assert.match(js, /scrollColorOnScroll/);
+  assert.match(js, /getBoundingClientRect/);
+  assert.match(js, /--scroll-color-position/);
+  assert.match(js, /window\.addEventListener\('scroll', syncScrollHeadings/);
 });
 
 test('projects page includes all approved case studies and ownership language', () => {

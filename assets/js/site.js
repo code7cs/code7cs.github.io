@@ -158,6 +158,35 @@ if (reduceMotion.matches || !('IntersectionObserver' in window)) {
   for (const node of revealNodes) revealObserver.observe(node);
 }
 
+const scrollColorOnScroll = [...document.querySelectorAll('.scroll-color-on-scroll')];
+const clampScrollColor = (value, min, max) => Math.max(min, Math.min(max, value));
+
+const syncScrollHeadings = () => {
+  if (reduceMotion.matches || !scrollColorOnScroll.length) return;
+
+  const viewportHeight = Math.max(window.innerHeight, 1);
+  const sweepStart = viewportHeight * .92;
+  const sweepEnd = viewportHeight * .3;
+
+  for (const heading of scrollColorOnScroll) {
+    const progress = clampScrollColor(
+      (sweepStart - heading.getBoundingClientRect().top) / (sweepStart - sweepEnd),
+      0,
+      1,
+    );
+    heading.style.setProperty(
+      '--scroll-color-position',
+      `${100 - progress * 100}%`,
+    );
+  }
+};
+
+if (scrollColorOnScroll.length) {
+  window.addEventListener('scroll', syncScrollHeadings, { passive: true });
+  window.addEventListener('resize', syncScrollHeadings);
+  syncScrollHeadings();
+}
+
 const particleScene = document.querySelector('[data-particle-scene]');
 
 if (particleScene) {
