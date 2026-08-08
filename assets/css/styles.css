@@ -15,6 +15,9 @@
   --shadow-small: 0 0.5rem 1.5rem rgb(16 42 67 / 7%);
   --radius: 1.25rem;
   --content: 72rem;
+  --motion-fast: 180ms;
+  --motion-enter: 650ms;
+  --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 * {
@@ -541,6 +544,108 @@ main {
   margin: 0;
 }
 
+html.motion-enabled body {
+  background-size: 145% 145%, 100% 100%;
+  background-repeat: no-repeat;
+  animation: ambient-drift 22s ease-in-out infinite alternate;
+}
+
+html.motion-enabled .site-header {
+  animation: header-arrival 500ms var(--motion-ease) both;
+}
+
+html.motion-enabled [data-intro] {
+  animation: intro-reveal var(--motion-enter) var(--motion-ease) both;
+  animation-delay: calc(var(--motion-order, 0) * 70ms + 80ms);
+}
+
+html.motion-enabled [data-reveal] {
+  opacity: 0;
+  transform: translateY(1.125rem);
+  transition:
+    opacity var(--motion-enter) var(--motion-ease),
+    transform var(--motion-enter) var(--motion-ease),
+    border-color var(--motion-fast) ease,
+    box-shadow var(--motion-fast) ease;
+  transition-delay:
+    calc(var(--motion-order, 0) * 55ms),
+    calc(var(--motion-order, 0) * 55ms),
+    0ms,
+    0ms;
+}
+
+html.motion-enabled [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.primary-nav a,
+.wordmark {
+  transition: color var(--motion-fast) ease, background-color var(--motion-fast) ease, transform var(--motion-fast) ease;
+}
+
+.metric-card,
+.content-card,
+.project-card,
+.resume-card {
+  transition: transform var(--motion-fast) ease, border-color var(--motion-fast) ease, box-shadow var(--motion-fast) ease;
+}
+
+.button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .primary-nav a:hover,
+  .wordmark:hover {
+    transform: translateY(-0.0625rem);
+  }
+
+  html.motion-enabled .metric-card[data-reveal].is-visible:hover,
+  html.motion-enabled .content-card[data-reveal].is-visible:hover,
+  html.motion-enabled .project-card[data-reveal].is-visible:hover,
+  html.motion-enabled .resume-card[data-reveal].is-visible:hover {
+    transform: translateY(-0.25rem);
+    border-color: rgb(27 106 155 / 42%);
+    box-shadow: 0 1.5rem 4rem rgb(16 42 67 / 13%);
+  }
+}
+
+@keyframes ambient-drift {
+  from {
+    background-position: 0% 0%, center;
+  }
+
+  to {
+    background-position: 100% 24%, center;
+  }
+}
+
+@keyframes header-arrival {
+  from {
+    opacity: 0;
+    transform: translateY(-0.75rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes intro-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @media (max-width: 60rem) {
   .metric-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -624,6 +729,37 @@ main {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  html.motion-enabled body {
+    animation: none;
+    background-position: 0% 0%, center;
+  }
+
+  html.motion-enabled .site-header,
+  html.motion-enabled [data-intro] {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  html.motion-enabled [data-reveal],
+  html.motion-enabled [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    transition-delay: 0s;
+  }
+
+  .button:hover,
+  .button:active,
+  .primary-nav a:hover,
+  .wordmark:hover,
+  html.motion-enabled .metric-card[data-reveal].is-visible:hover,
+  html.motion-enabled .content-card[data-reveal].is-visible:hover,
+  html.motion-enabled .project-card[data-reveal].is-visible:hover,
+  html.motion-enabled .resume-card[data-reveal].is-visible:hover {
+    transform: none;
   }
 
   *,

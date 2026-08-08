@@ -116,9 +116,24 @@ test('shared assets provide responsive, focus, and reduced-motion behavior', () 
   assert.match(css, /:focus-visible/);
   assert.match(css, /prefers-reduced-motion/);
   assert.match(css, /@media\s*\(max-width:\s*48rem\)/);
+  assert.match(css, /@keyframes\s+ambient-drift/);
+  assert.match(css, /@keyframes\s+intro-reveal/);
+  assert.match(css, /\[data-reveal\]\.is-visible/);
+  assert.match(css, /@media\s*\(hover:\s*hover\)/);
   assert.doesNotMatch(css, /body\s*\{[^}]*min-width\s*:\s*20rem/s, 'body must shrink inside a 320px viewport with a scrollbar');
   assert.match(js, /aria-expanded/);
   assert.match(js, /Escape/);
+  assert.match(js, /IntersectionObserver/);
+  assert.match(js, /prefers-reduced-motion/);
+  assert.match(js, /data-reveal/);
+  assert.match(js, /is-visible/);
+});
+
+test('motion initialization preserves visible content for accessibility fallbacks', () => {
+  const js = read('assets/js/site.js');
+  assert.match(js, /reduceMotion\.matches/);
+  assert.match(js, /'IntersectionObserver' in window/);
+  assert.match(js, /node\.classList\.add\('is-visible'\)/);
 });
 
 test('every public page includes useful metadata', () => {

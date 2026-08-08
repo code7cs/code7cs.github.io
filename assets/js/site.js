@@ -31,3 +31,37 @@ desktopQuery.addEventListener('change', (event) => {
 for (const node of document.querySelectorAll('[data-current-year]')) {
   node.textContent = String(new Date().getFullYear());
 }
+
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+document.documentElement.classList.add('motion-enabled');
+
+for (const [index, node] of document.querySelectorAll('.hero > *, .page-intro > *, .resume-hero > *').entries()) {
+  node.setAttribute('data-intro', '');
+  node.style.setProperty('--motion-order', String(index));
+}
+
+const revealNodes = [...document.querySelectorAll(
+  '.metric-card, .content-card, .story-panel, .cta-panel, .project-card, .resume-card',
+)];
+
+for (const [index, node] of revealNodes.entries()) {
+  node.setAttribute('data-reveal', '');
+  node.style.setProperty('--motion-order', String(index % 4));
+}
+
+if (reduceMotion.matches || !('IntersectionObserver' in window)) {
+  for (const node of revealNodes) node.classList.add('is-visible');
+} else {
+  const revealObserver = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+      entry.target.classList.add('is-visible');
+      revealObserver.unobserve(entry.target);
+    }
+  }, {
+    rootMargin: '0px 0px -8% 0px',
+    threshold: 0.12,
+  });
+
+  for (const node of revealNodes) revealObserver.observe(node);
+}
