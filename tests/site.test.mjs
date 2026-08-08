@@ -117,6 +117,9 @@ test('shared assets provide responsive, focus, and reduced-motion behavior', () 
   assert.match(css, /prefers-reduced-motion/);
   assert.match(css, /@media\s*\(max-width:\s*48rem\)/);
   assert.match(css, /@keyframes\s+ambient-drift/);
+  assert.match(css, /animation:\s*ambient-drift\s+16s\s+ease-in-out\s+infinite\s+alternate/);
+  assert.match(css, /background-position:\s*0%\s*0%,\s*100%\s*100%,\s*center/);
+  assert.match(css, /background-position:\s*70%\s*42%,\s*30%\s*58%,\s*center/);
   assert.match(css, /@keyframes\s+intro-reveal/);
   assert.match(css, /\[data-reveal\]\.is-visible/);
   assert.match(css, /@media\s*\(hover:\s*hover\)/);
