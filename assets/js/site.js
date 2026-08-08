@@ -35,6 +35,24 @@ for (const node of document.querySelectorAll('[data-current-year]')) {
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 document.documentElement.classList.add('motion-enabled');
 
+const particleReticle = document.querySelector('.particle-reticle');
+
+if (particleReticle) {
+  document.documentElement.classList.add('has-global-reticle');
+  document.body.append(particleReticle);
+
+  const updateGlobalPointer = (event) => {
+    particleReticle.style.setProperty('--pointer-x', `${event.clientX}px`);
+    particleReticle.style.setProperty('--pointer-y', `${event.clientY}px`);
+    particleReticle.classList.add('is-visible');
+  };
+
+  const clearGlobalPointer = () => particleReticle.classList.remove('is-visible');
+
+  window.addEventListener('pointermove', updateGlobalPointer, { passive: true });
+  window.addEventListener('blur', clearGlobalPointer);
+}
+
 const siteStarfield = document.createElement('canvas');
 siteStarfield.className = 'site-starfield';
 siteStarfield.setAttribute('aria-hidden', 'true');
@@ -245,7 +263,7 @@ if (particleScene) {
     const animate = () => {
       rotation += rotationVelocity;
       rotationVelocity *= .92;
-      scrollProgress += (targetScrollProgress - scrollProgress) * .06;
+      scrollProgress += (targetScrollProgress - scrollProgress) * .028;
       if (!reduceMotion.matches) rotation += .002;
       draw();
       if (!reduceMotion.matches) requestAnimationFrame(animate);
@@ -263,9 +281,6 @@ if (particleScene) {
 
       brushX = clamp(brushX + (nextX - previousCursorX) / Math.max(rect.width, 1) * 7, -1.2, 1.2);
       brushY = clamp(brushY + (nextY - previousCursorY) / Math.max(rect.height, 1) * 7, -1.2, 1.2);
-      cursorX = nextX;
-      cursorY = nextY;
-
       if (Math.abs(nextX - previousCursorX) + Math.abs(nextY - previousCursorY) > 1) {
         brushTrail.push({ x: nextX, y: nextY, dx: brushX, dy: brushY, life: 1 });
         brushTrail = brushTrail.slice(-8);
@@ -274,23 +289,21 @@ if (particleScene) {
       previousCursorX = nextX;
       previousCursorY = nextY;
       cursorActive = true;
-      particleScene.style.setProperty('--pointer-x', `${event.clientX - rect.left}px`);
-      particleScene.style.setProperty('--pointer-y', `${event.clientY - rect.top}px`);
-      particleScene.classList.add('is-pointer-active');
       if (reduceMotion.matches) draw();
     };
 
-    const clearPointer = () => {
-      cursorActive = false;
-      particleScene.classList.remove('is-pointer-active');
-    };
+    const clearPointer = () => { cursorActive = false; };
 
     let lastScrollY = window.scrollY;
     const syncScroll = () => {
       const delta = window.scrollY - lastScrollY;
       lastScrollY = window.scrollY;
       const sceneStart = particleScene.offsetTop;
-      const sceneRange = Math.max(particleScene.offsetHeight * .7, 1);
+      const sceneRange = Math.max(
+        particleScene.offsetHeight * 1.45,
+        window.innerHeight * 1.25,
+        1,
+      );
       const progress = clamp((window.scrollY - sceneStart) / sceneRange, 0, 1);
       rotationVelocity += clamp(delta * .0008, -.08, .08);
       targetScrollProgress = progress;

@@ -244,8 +244,8 @@ main {
 }
 
 .particle-reticle {
-  position: absolute;
-  z-index: 2;
+  position: fixed;
+  z-index: 60;
   left: var(--pointer-x, 50%);
   top: var(--pointer-y, 50%);
   width: 18px;
@@ -253,7 +253,7 @@ main {
   transform: translate(-50%, -50%);
   pointer-events: none;
   opacity: 0;
-  background: radial-gradient(circle at center, rgb(215 229 193 / 85%) 0 1.5px, transparent 1.8px);
+  background: none;
   transition: opacity 120ms ease-out;
 }
 
@@ -261,7 +261,7 @@ main {
 .particle-reticle::after {
   position: absolute;
   background: rgb(215 229 193 / 72%);
-  box-shadow: 0 0 5px rgb(215 229 193 / 25%);
+  box-shadow: none;
   content: "";
 }
 
@@ -279,8 +279,15 @@ main {
   height: 1px;
 }
 
-.hero-immersive.is-pointer-active .particle-reticle {
+.particle-reticle.is-visible {
   opacity: .78;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html.has-global-reticle,
+  html.has-global-reticle body {
+    cursor: none;
+  }
 }
 
 .hero h1,

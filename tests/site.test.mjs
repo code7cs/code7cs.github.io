@@ -148,6 +148,24 @@ test('homepage includes the approved scroll-dissolving particle scene', () => {
   assert.match(js, /particleScene\.addEventListener\('pointermove'/);
 });
 
+test('particle dispersion eases over a longer scroll range', () => {
+  const js = read('assets/js/site.js');
+
+  assert.match(js, /particleScene\.offsetHeight \* 1\.45/);
+  assert.match(js, /window\.innerHeight \* 1\.25/);
+  assert.match(js, /scrollProgress \+= \(targetScrollProgress - scrollProgress\) \* \.028/);
+});
+
+test('crosshair follows the pointer across the whole viewport without a glow', () => {
+  const css = read('assets/css/styles.css');
+  const js = read('assets/js/site.js');
+
+  assert.match(css, /\.particle-reticle\s*\{[\s\S]*position:\s*fixed/);
+  assert.match(css, /\.particle-reticle::before,[\s\S]*\.particle-reticle::after\s*\{[\s\S]*box-shadow:\s*none/);
+  assert.match(js, /document\.body\.append\(particleReticle\)/);
+  assert.match(js, /window\.addEventListener\('pointermove', updateGlobalPointer/);
+});
+
 test('site uses a page-wide dark particle backdrop', () => {
   const css = read('assets/css/styles.css');
 
