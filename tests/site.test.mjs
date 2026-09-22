@@ -100,12 +100,40 @@ test('scroll-driven section headings sweep each line in reading order', () => {
 
 test('projects page includes all approved case studies and ownership language', () => {
   const html = read('projects.html');
-  for (const name of ['Control Hub Frontend Platform', 'Momentum CH Design System', 'Engineering Lab', 'Local Wellness Customer Platform']) {
+  for (const name of ['Control Hub Frontend Platform', 'Momentum CH Design System', 'Engineering Lab', 'Local Wellness Business']) {
     assert.match(html, new RegExp(name, 'i'));
   }
   assert.match(html, /Control Hub implementation and adoption/i);
   assert.match(html, /https:\/\/momentum\.design\/en\//i);
   assert.match(html, /https:\/\/github\.com\/code7cs\/Demos/i);
+});
+
+test('wellness project mirrors the latest AI-enabled resume content', () => {
+  const projects = read('projects.html');
+  const resume = read('resume.html');
+
+  for (const html of [projects, resume]) {
+    assert.match(html, /Local Wellness Business/i);
+    assert.match(html, /AI Concierge\s*&(?:amp;)?\s*Customer Web Platform\s*\(Independent\)/i);
+    assert.match(html, /2024\s*[–-]\s*2026/i);
+    assert.match(html, /AI Concierge/i);
+    assert.match(html, /LLM-powered/i);
+    assert.match(html, /GPT-5 nano/i);
+    assert.match(html, /OpenAI API/i);
+    assert.match(html, /deterministic fallback/i);
+    assert.match(html, /admin-controlled feature flags/i);
+    assert.match(html, /service discovery/i);
+    assert.match(html, /email confirmations/i);
+    assert.match(html, /3,200\+/i);
+    assert.match(html, /(?:90-day retention|retention limited to 90 days)/i);
+    assert.match(html, /message redaction/i);
+    assert.match(html, /admin review/i);
+    assert.match(html, /server rate limiting/i);
+    assert.match(html, /PostgreSQL\/Prisma/i);
+    assert.match(html, /NextAuth/i);
+    assert.match(html, /Upstash Redis/i);
+    assert.match(html, /Vercel/i);
+  }
 });
 
 test('resume page translates approved resume content without publishing the PDF', () => {
