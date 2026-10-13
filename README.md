@@ -7,8 +7,12 @@ Personal engineering portfolio for Hanfan Wang.
 The site is a lightweight, dependency-free GitHub Pages project with three primary pages:
 
 - About: positioning, engineering strengths, and selected impact
-- Projects: public and text-only case studies with clear ownership context
+- Projects: selected engineering work and interactive case studies with clear ownership context
 - Resume: an HTML résumé adapted from Hanfan's source résumé without publishing the PDF or phone number
+
+## Momentum CH case study
+
+The reusable case study is available at [`/case-studies/momentum-ch/`](https://code7cs.github.io/case-studies/momentum-ch/). It includes the token pipeline, component examples, dark mode, and adoption story. The page supports normal reading and a presentation mode; illustrative examples are labeled, and the public Momentum source reference is included as a static image.
 
 ## Local preview
 
